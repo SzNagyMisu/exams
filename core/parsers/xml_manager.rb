@@ -1,15 +1,13 @@
-require 'json'
-
-module FileManagers
-  class JsonManager
+module Parsers
+  class XmlParser
 
     class << self
       def parse(data = '')
-        JSON.parse(data)
+
       end
 
       def convert(data)
-        data.to_json
+        raise NoMethodError, 'XmlParser not yet implemented'
       end
     end
 

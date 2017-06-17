@@ -1,12 +1,12 @@
-Dir['core/file_managers/*.rb'].each { |file_manager| require file_manager }
+Dir['core/parsers/*.rb'].each { |file_manager| require file_manager }
 
 class DatabaseManager
 
   TYPE_EXTENSIONS = {yaml: 'yml', csv: 'csv', json: 'json', xml: 'xml'}
 
-  def initialize(instance)
-    @file_path = "db/tables/#{instance.table_name}.#{TYPE_EXTENSIONS[instance::DATA_TYPE]}"
-    @file_manager = Object.const_get("FileManagers::#{instance::DATA_TYPE.to_s.capitalize}Manager")
+  def initialize(caller_class)
+    @file_path = "db/tables/#{caller_class.table_name}.#{TYPE_EXTENSIONS[caller_class::DATA_TYPE]}"
+    @file_manager = Object.const_get("Parsers::#{caller_class::DATA_TYPE.to_s.capitalize}Parser")
   end
 
 

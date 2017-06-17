@@ -7,8 +7,6 @@ class DatabaseRecord
   COLUMN_NAMES = []
   DATA_TYPE = :yaml
 
-  attr_reader :table_name
-
 
   def initialize(attributes = {})
     self.class.send(:attr_accessor, *column_names)
@@ -27,7 +25,7 @@ class DatabaseRecord
       @table_name = value
     end
 
-    def all # todo store in @all -> update on #save(?)
+    def all
       manager.read.map { |attributes| build(attributes) }
     end
 
@@ -44,7 +42,7 @@ class DatabaseRecord
       find_by(id: id) # || raise
     end
 
-    %w(first last count).each do |array_method| # todo inherit from Array(?)
+    %w(first last take count).each do |array_method|
       define_method array_method do
         all.send(array_method)
       end
@@ -91,26 +89,38 @@ class DatabaseRecord
 
 
   def save
-    # self.class.all -> modify -> self.class.manager.write
+    modify_file do |all|
+      self.id ||= all.map(&:id).max + 1
+
+      (all.find { |record| record.id == id }&.attributes = attributes) || all << self
+      all
+    end
   end
 
   def update(attributes = {})
-    self.tap { |instance| instance.attributes = attributes }.save
+    self.attributes = attributes
+    save
   end
 
   def delete
-
+    modify_file do |all|
+      all.delete_if { |record| record.id == id }
+    end
   end
 
   def attributes
     column_names.map { |column_name| [column_name, send(column_name)] }.to_h
   end
+  alias_method :to_h, :attributes
 
   def attributes=(attributes = {})
-    attributes = attributes.map { |column, value| [column.to_sym, value] }.to_h # to ensure they are symbols
+    attributes = attributes.map { |column, value| [column.to_s, value] }.to_h # to ensure they are all strings
 
     column_names.each do |column|
-      instance_variable_set("@#{column}", attributes[column.to_sym])
+      instance_variable_set(
+          "@#{column}",
+          attributes.fetch(column.to_s, instance_variable_get("@#{column}"))
+      )
     end
   end
 
@@ -119,6 +129,14 @@ class DatabaseRecord
 
   def column_names
     %w(id) + self.class::COLUMN_NAMES
+  end
+
+  # load whole file, change one record, save whole file
+  def modify_file
+    self.class.instance_variable_get('@manager').write(
+        yield(self.class.all).map(&:to_h)
+    )
+    self
   end
 
 end

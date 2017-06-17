@@ -1,7 +1,7 @@
 require 'yaml'
 
-module FileManagers
-  class YamlManager
+module Parsers
+  class YamlParser
 
     class << self
       def parse(data = '')
