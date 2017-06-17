@@ -4,6 +4,10 @@ class String
     gsub(/s\z/, '') # enough for this project
   end
 
+  def pluralize
+    "#{self}s"
+  end
+
   def camelize
     gsub(/\_(\w)/, $1.to_s.upcase)
   end
