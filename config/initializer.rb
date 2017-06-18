@@ -5,5 +5,6 @@ require 'extensions/string'
 
 require 'core/database_record'
 Dir['app/models/*.rb'].each { |model| require model }
+Dir['app/controllers/*.rb'].each { |controller| require controller }
 
 require 'db/seeds'

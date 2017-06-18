@@ -1,0 +1,16 @@
+<h2>Exams</h2>
+
+<h3>Feladatok</h3>
+
+<dl>
+  <dt>Az elért pontszámok alapján melyik feladat volt a legkönnyebb?</dt>
+  <dd><%= @task[:easiest_exercise] %></dd>
+
+  <dt>Az elért pontszámok alapján melyik vizsga volt a legnehezebb?</dt>
+  <dd><%= @task[:hardest_exam] %></dd>
+
+  <dt>Ki volt a legeredményesebb vizsgázó?</dt>
+  <dd><%= @task[:best_student] %></dd>
+</dl>
+
+<a href="/download_csv" target="_blank">CSV fájl ltöltése</a>
