@@ -7,11 +7,9 @@ class Exam < DatabaseRecord
 
 
   def self.hardest
-    all.map do |exam|
-      [exam,
-       exam.student_exams.inject(0) { |memo, student_exam| memo + student_exam.score }]
-    end.min_by(&:last).first
+    all.min_by(&:score_by_students)
   end
+
 
   def title
     "#{year} / #{number}"
@@ -19,6 +17,10 @@ class Exam < DatabaseRecord
 
   def max_score
     Exercise::MAX_SCORE * exercises.count
+  end
+
+  def score_by_students
+    student_exams.inject(0) { |memo, student_exam| memo + student_exam.score }
   end
 
 end

@@ -9,14 +9,16 @@ class Exercise < DatabaseRecord
 
 
   def self.easiest # todo what if there are more?
-    all.map do |exercise|
-      [exercise,
-      exercise.student_exercises.inject(0) { |memo, student_exercise| memo + student_exercise.score }]
-    end.max_by(&:last).first
+    all.max_by(&:score_by_students)
   end
+
 
   def title
     "#{exam.title} / #{number}"
+  end
+
+  def score_by_students
+    student_exercises.inject(0) { |memo, student_exercise| memo + student_exercise.score }
   end
 
 end

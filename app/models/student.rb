@@ -8,9 +8,12 @@ class Student < DatabaseRecord
 
 
   def self.best
-    all.map do |student|
-      [student, student.student_exercises.inject(0) { |memo, exercise| memo + exercise.score }]
-    end.max_by(&:last).first
+    all.max_by(&:score_by_exercises)
+  end
+
+
+  def score_by_exercises
+    student_exercises.inject(0) { |memo, student_exercise| memo + student_exercise.score }
   end
 
 end

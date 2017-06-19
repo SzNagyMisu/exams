@@ -15,7 +15,7 @@ class StudentExam < DatabaseRecord
   end
 
   def percent
-    score / exam.max_score * 100
+    score.to_f / exam.max_score * 100
   end
 
 end

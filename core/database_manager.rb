@@ -1,4 +1,4 @@
-Dir['core/parsers/*.rb'].each { |file_manager| require file_manager }
+Dir['core/parsers/*.rb'].each { |file_parser| require file_parser }
 
 class DatabaseManager
 
