@@ -9,7 +9,7 @@ module Relations
 
       @instance.send(:define_method, relation_name) do
         if self.id
-          Object.const_get(relation_name.to_s.singularize.capitalize.camelize)
+          Object.const_get(relation_name.to_s.singularize.camelize)
               .where("#{self.class.to_s.underscore}_id": self.id)
         end
       end

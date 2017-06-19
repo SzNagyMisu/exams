@@ -1,3 +1,5 @@
+require_relative '../config/initializer'
+
 File.delete(*Dir['db/tables/*'])
 
 Student.seed([
@@ -81,3 +83,5 @@ StudentExam.seed([
     {id: 11, student_id: 3, exam_id: 3, note: 1},
     {id: 12, student_id: 3, exam_id: 4, note: 5}
 ])
+
+warn 'Seed successful'

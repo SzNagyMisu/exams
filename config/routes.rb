@@ -1,9 +1,15 @@
-set views: 'app/views'
+set views: "#{settings.root}/app/views"
 
 get '/' do
-  ExamsController.new(self).index
+  @task = {
+      easiest_exercise: Exercise.easiest.title,
+      hardest_exam: Exam.hardest.title,
+      best_student: Student.best.name
+  }
+
+  erb :index
 end
 
 get '/download_csv' do
-  ExamsController.new(self).download_csv
+  'not yet coded'
 end

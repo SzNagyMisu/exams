@@ -9,7 +9,7 @@ class String
   end
 
   def camelize
-    gsub(/\_(\w)/, $1.to_s.upcase)
+    split('_').map(&:capitalize).join
   end
 
   def underscore
