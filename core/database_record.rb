@@ -16,14 +16,23 @@ class DatabaseRecord
 
   class << self
 
-    def table_name
-      @table_name = to_s.underscore.pluralize unless defined?(@table_name)
-      @table_name
+    def abstract_class?
+      defined?(@abstract_class) ? @abstract_class : false
     end
+    attr_writer :abstract_class
 
-    def table_name=(value)
-      @table_name = value
+    def table_name
+      unless abstract_class?
+        @table_name = to_s.underscore.pluralize unless defined?(@table_name)
+        @table_name
+      end
     end
+    attr_writer :table_name
+
+    def environment
+      @environment || :development
+    end
+    attr_writer :environment
 
     def all
       manager.read.map { |attributes| build(attributes) }
@@ -86,6 +95,7 @@ class DatabaseRecord
     end
 
   end
+  self.abstract_class = true
 
 
   def save

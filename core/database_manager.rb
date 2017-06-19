@@ -2,10 +2,10 @@ Dir['core/parsers/*.rb'].each { |file_parser| require file_parser }
 
 class DatabaseManager
 
-  TYPE_EXTENSIONS = {yaml: 'yml', csv: 'csv', json: 'json', xml: 'xml'}
+  TYPE_EXTENSIONS = {yaml: 'yml', csv: 'csv', json: 'json', xml: 'xml'} # xml not coded
 
   def initialize(caller_class)
-    @file_path = "db/tables/#{caller_class.table_name}.#{TYPE_EXTENSIONS[caller_class::DATA_TYPE]}"
+    @file_path = "db/tables/#{caller_class.environment}/#{caller_class.table_name}.#{TYPE_EXTENSIONS[caller_class::DATA_TYPE]}"
     @file_manager = Object.const_get("Parsers::#{caller_class::DATA_TYPE.to_s.capitalize}Parser")
   end
 

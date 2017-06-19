@@ -1,6 +1,6 @@
 require_relative '../config/initializer'
 
-File.delete(*Dir['db/tables/*'])
+File.delete(*Dir["db/tables/#{DatabaseRecord.environment}/*"])
 
 Student.seed([
     {id: 1, name: 'Vizsgázó Béla', initials: 'VB'},
